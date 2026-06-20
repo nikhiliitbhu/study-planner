@@ -1,0 +1,617 @@
+/* ============================================================
+   STUDY PLANNER — style.css
+   Tip: CSS variables (--name) let you change the whole theme
+   from one place. Try changing --accent to your favorite color!
+   ============================================================ */
+
+/* ── 1. CSS VARIABLES (Design tokens) ─────────────────────── */
+:root {
+  --bg:          #f5f4f0;
+  --surface:     #ffffff;
+  --surface-2:   #f0efe9;
+  --border:      #e2e0d8;
+  --text:        #1a1916;
+  --text-muted:  #6b6960;
+  --accent:      #2563eb;       /* blue — main accent */
+  --accent-light:#eff6ff;
+  --green:       #16a34a;
+  --green-light: #f0fdf4;
+  --amber:       #d97706;
+  --amber-light: #fffbeb;
+  --red:         #dc2626;
+  --red-light:   #fef2f2;
+  --radius-sm:   6px;
+  --radius-md:   10px;
+  --radius-lg:   14px;
+  --shadow:      0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.05);
+  --transition:  0.18s ease;
+}
+
+/* Dark mode — same variables, different values */
+body.dark {
+  --bg:          #111110;
+  --surface:     #1c1c1a;
+  --surface-2:   #252523;
+  --border:      #2e2e2b;
+  --text:        #f0efe9;
+  --text-muted:  #9a9890;
+  --accent:      #3b82f6;
+  --accent-light:#1e3a5f;
+  --green:       #22c55e;
+  --green-light: #052e16;
+  --amber:       #f59e0b;
+  --amber-light: #1c1208;
+  --red:         #ef4444;
+  --red-light:   #1f0808;
+}
+
+
+/* ── 2. RESET & BASE ───────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+  transition: background var(--transition), color var(--transition);
+}
+
+/* Remove default list styling */
+ul { list-style: none; }
+
+/* Remove default button styles, we'll add our own */
+button {
+  cursor: pointer;
+  font-family: inherit;
+  border: none;
+  background: none;
+}
+
+input, select {
+  font-family: inherit;
+  font-size: 0.95rem;
+}
+
+
+/* ── 3. HEADER ─────────────────────────────────────────────── */
+.header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+
+.logo {
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.app-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.02em;
+}
+
+.app-subtitle {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* Countdown box in header */
+.countdown-box {
+  background: var(--accent-light);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-md);
+  padding: 6px 14px;
+  text-align: center;
+  min-width: 90px;
+}
+
+.countdown-number {
+  display: block;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.countdown-label {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Dark mode toggle button */
+.dark-toggle {
+  font-size: 1.3rem;
+  padding: 6px;
+  border-radius: var(--radius-sm);
+  transition: background var(--transition);
+  line-height: 1;
+}
+
+.dark-toggle:hover {
+  background: var(--surface-2);
+}
+
+
+/* ── 4. MAIN CONTAINER ─────────────────────────────────────── */
+.container {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+
+/* ── 5. PROGRESS BAR ───────────────────────────────────────── */
+.progress-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1rem 1.25rem;
+}
+
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+#progressPercent {
+  font-weight: 600;
+  color: var(--green);
+}
+
+.progress-bar-track {
+  background: var(--surface-2);
+  border-radius: 999px;
+  height: 10px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: var(--green);
+  border-radius: 999px;
+  width: 0%;
+  /* Smooth animation when width changes */
+  transition: width 0.4s ease;
+}
+
+
+/* ── 6. ADD TASK SECTION ───────────────────────────────────── */
+.add-task-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+}
+
+.section-title {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+}
+
+.form-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* Task text input — takes up as much space as possible */
+.task-input {
+  flex: 1 1 200px;
+  padding: 9px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--bg);
+  color: var(--text);
+  transition: border-color var(--transition);
+  min-width: 0;
+}
+
+.task-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
+}
+
+.subject-select,
+.priority-select,
+.date-input {
+  padding: 9px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--bg);
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color var(--transition);
+}
+
+.subject-select:focus,
+.priority-select:focus,
+.date-input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.btn-add {
+  padding: 9px 18px;
+  background: var(--accent);
+  color: #fff;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  transition: opacity var(--transition), transform var(--transition);
+}
+
+.btn-add:hover {
+  opacity: 0.88;
+  transform: translateY(-1px);
+}
+
+.btn-add:active {
+  transform: scale(0.97);
+}
+
+
+/* ── 7. FILTER BAR ─────────────────────────────────────────── */
+.filter-section {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.filter-label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.filter-btn {
+  padding: 5px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  background: var(--surface);
+  transition: all var(--transition);
+}
+
+.filter-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* Active filter button gets solid background */
+.filter-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.subject-filter-group {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+/* Push clear button to the right */
+.btn-clear {
+  margin-left: auto;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  padding: 5px 10px;
+  border-radius: var(--radius-sm);
+  transition: color var(--transition), background var(--transition);
+}
+
+.btn-clear:hover {
+  color: var(--red);
+  background: var(--red-light);
+}
+
+
+/* ── 8. TASK LIST ──────────────────────────────────────────── */
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Each task item */
+.task-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  transition: box-shadow var(--transition), border-color var(--transition);
+  animation: slideIn 0.2s ease;
+}
+
+/* Slide-in animation when task is added */
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.task-item:hover {
+  box-shadow: var(--shadow);
+  border-color: var(--accent);
+}
+
+/* Completed task — greyed out */
+.task-item.completed {
+  opacity: 0.55;
+}
+
+/* Custom checkbox */
+.task-checkbox {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  flex-shrink: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2px;
+  transition: all var(--transition);
+  font-size: 0.65rem;
+  color: transparent;
+}
+
+.task-checkbox:hover {
+  border-color: var(--green);
+}
+
+/* Checked state */
+.task-checkbox.checked {
+  background: var(--green);
+  border-color: var(--green);
+  color: #fff;
+}
+
+/* Task text area takes remaining space */
+.task-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.task-name {
+  font-size: 0.95rem;
+  color: var(--text);
+  word-break: break-word;
+}
+
+/* Strike through when task is completed */
+.task-item.completed .task-name {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+
+/* Meta info row below task name */
+.task-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+/* Subject badge */
+.badge-subject {
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--accent-light);
+  color: var(--accent);
+  font-weight: 500;
+}
+
+/* Priority badge */
+.badge-priority {
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-weight: 500;
+}
+
+.badge-priority.high   { background: var(--red-light);   color: var(--red);   }
+.badge-priority.medium { background: var(--amber-light); color: var(--amber); }
+.badge-priority.low    { background: var(--green-light); color: var(--green); }
+
+/* Due date badge */
+.badge-due {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.badge-due.overdue {
+  color: var(--red);
+  font-weight: 600;
+}
+
+.badge-due.due-soon {
+  color: var(--amber);
+  font-weight: 600;
+}
+
+/* Delete button shown on hover */
+.task-actions {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.btn-delete {
+  font-size: 1rem;
+  padding: 4px 6px;
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  opacity: 0;
+  transition: opacity var(--transition), color var(--transition), background var(--transition);
+}
+
+/* Show delete button only when hovering over the task */
+.task-item:hover .btn-delete {
+  opacity: 1;
+}
+
+.btn-delete:hover {
+  color: var(--red);
+  background: var(--red-light);
+}
+
+
+/* ── 9. EMPTY STATE ────────────────────────────────────────── */
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+  display: none; /* Hidden by default; JS shows it when list is empty */
+}
+
+.empty-state.visible {
+  display: block;
+}
+
+.empty-icon {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+}
+
+.empty-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 0.25rem;
+}
+
+.empty-hint {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+
+/* ── 10. STATS SECTION ─────────────────────────────────────── */
+.stats-section {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 12px;
+  text-align: center;
+}
+
+.stat-number {
+  display: block;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.1;
+}
+
+.stat-number.green { color: var(--green); }
+.stat-number.amber { color: var(--amber); }
+.stat-number.red   { color: var(--red);   }
+
+.stat-label {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+
+/* ── 11. FOOTER ────────────────────────────────────────────── */
+.footer {
+  text-align: center;
+  padding: 1.5rem;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border);
+}
+
+
+/* ── 12. RESPONSIVE (Mobile) ───────────────────────────────── */
+@media (max-width: 600px) {
+  .header {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .form-row {
+    flex-direction: column;
+  }
+
+  .task-input,
+  .subject-select,
+  .priority-select,
+  .date-input,
+  .btn-add {
+    width: 100%;
+  }
+
+  .stats-section {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .btn-clear {
+    margin-left: 0;
+  }
+
+  /* Always show delete button on mobile (no hover) */
+  .btn-delete {
+    opacity: 1;
+  }
+}
+
+/* Respect user's preference for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .task-item {
+    animation: none;
+  }
+  .progress-bar-fill {
+    transition: none;
+  }
+}
