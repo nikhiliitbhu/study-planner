@@ -124,6 +124,37 @@ input, select {
   padding: 6px 14px;
   text-align: center;
   min-width: 90px;
+  position: relative;
+}
+
+/* Small pencil button to edit the exam date */
+.countdown-edit {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  font-size: 0.7rem;
+  padding: 3px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1px solid var(--accent);
+  line-height: 1;
+}
+
+/* Hidden by default; shown when editing the exam date */
+.countdown-date-input {
+  display: none;
+  margin-top: 6px;
+  width: 100%;
+  padding: 4px 6px;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 0.75rem;
+}
+
+.countdown-date-input.visible {
+  display: block;
 }
 
 .countdown-number {

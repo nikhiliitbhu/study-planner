@@ -27,9 +27,12 @@ const statOverdue      = document.getElementById('statOverdue');
 
 const daysLeftEl       = document.getElementById('daysLeft');
 const darkToggle       = document.getElementById('darkToggle');
+const editExamDateBtn  = document.getElementById('editExamDateBtn');
+const examDateInput    = document.getElementById('examDateInput');
 
 const STORAGE_KEY = 'study-planner-tasks';
-const BOARD_EXAM_DATE = '2025-12-15';
+const EXAM_DATE_KEY = 'study-planner-exam-date';
+const DEFAULT_EXAM_DATE = '2025-12-15';
 
 /* ── STEP 2: STATE ──────────────────────────────────────────── */
 let tasks = loadTasks();
@@ -234,10 +237,19 @@ function render() {
 }
 
 /* ── STEP 12: COUNTDOWN TO BOARD EXAM ──────────────────────── */
+function getExamDate() {
+  return localStorage.getItem(EXAM_DATE_KEY) || DEFAULT_EXAM_DATE;
+}
+
+function setExamDate(dateStr) {
+  localStorage.setItem(EXAM_DATE_KEY, dateStr);
+  updateCountdown();
+}
+
 function updateCountdown() {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-  const examDate = new Date(BOARD_EXAM_DATE);
+  const examDate = new Date(getExamDate());
   const diffDays = Math.max(0, Math.round((examDate - today) / 86400000));
   daysLeftEl.textContent = diffDays;
 }
@@ -252,6 +264,22 @@ function initDarkMode() {
 darkToggle.addEventListener('click', () => {
   document.body.classList.toggle('dark');
   localStorage.setItem('study-planner-dark', document.body.classList.contains('dark'));
+});
+
+/* ── STEP 13b: SET EXAM DATE FROM UI ────────────────────────── */
+editExamDateBtn.addEventListener('click', () => {
+  examDateInput.value = getExamDate();
+  examDateInput.classList.add('visible');
+  examDateInput.focus();
+});
+
+examDateInput.addEventListener('change', () => {
+  if (examDateInput.value) setExamDate(examDateInput.value);
+  examDateInput.classList.remove('visible');
+});
+
+examDateInput.addEventListener('blur', () => {
+  examDateInput.classList.remove('visible');
 });
 
 /* ── STEP 14: EVENT LISTENERS ───────────────────────────────── */
