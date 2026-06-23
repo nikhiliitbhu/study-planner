@@ -36,7 +36,7 @@ function showAllTasks() {
 
     box.innerHTML =
       '<div class="task-top-row">' +
-        '<input type="checkbox" class="task-checkbox" onclick="toggleComplete(' + i + ')">' +
+        '<input type="checkbox" class="task-checkbox' + (task.completed ? ' checked-style' : '') + '" onclick="toggleComplete(' + i + ')" ' + (task.completed ? 'checked' : '') + '>'  +
         '<p class="task-name">' + task.name + '</p>' +
         '<button class="delete-btn" onclick="deleteTask(' + i + ')">🗑️</button>' +
       '</div>' +
@@ -58,6 +58,7 @@ function showAllTasks() {
 
   // Stats bhi update karo har baar
   updateStats();
+  updateProgressBar();
 }
 
 // Yeh function naya task add karta hai
@@ -114,6 +115,31 @@ function updateStats() {
   document.getElementById("statDone").textContent = completedCount;
   document.getElementById("statPending").textContent = pendingCount;
 }
+// Jab bhi date input mein value change ho, calculate function chale
+document.getElementById("boardDateInput").onchange = calculateDaysLeft;
+function updateProgressBar() {
+  let total = allTasks.length;
+  let completedCount = 0;
+
+  for (let i = 0; i < allTasks.length; i++) {
+    if (allTasks[i].completed === true) {
+      completedCount = completedCount + 1;
+    }
+  }
+
+  // Percentage calculate karo
+  let percent = 0;
+  if (total > 0) {
+    percent = Math.round((completedCount / total) * 100);
+  }
+
+  // Text update karo
+  document.getElementById("progressText").textContent = completedCount + " of " + total + " tasks done today";
+  document.getElementById("progressPercent").textContent = percent + "%";
+
+  // Progress bar ki patti ki width % ke hisaab se set karo
+  document.getElementById("progressFill").style.width = percent + "%";
+}
 
 // Task delete karne ke liye
 function deleteTask(index) {
@@ -130,9 +156,49 @@ const examDate=new Date("2027-2-20");
 let numberOfDaysLeft = Math.ceil((examDate- new Date()) / (1000 * 60 * 60 * 24));
 daysToboard.innerText = numberOfDaysLeft + " ";
 
-// function clearhistory(){
 
-//     document.getElementById("clearCompletedBtn").innerHTML =
-//    "<p id='erase'>no content here.!</p>"
-// // localstorage.clear();
-//     localStorage.removeItem("clearCompletedBtn");}
+function clearCompletedTasks() {
+
+  // Naya khaali array banayenge jisme sirf PENDING tasks rakhenge
+  let remainingTasks = [];
+
+  for (let i = 0; i < allTasks.length; i++) {
+    let task = allTasks[i];
+
+    // Agar task complete NAHI hai, to use naye array mein rakh lo
+    if (task.completed === false) {
+      remainingTasks.push(task);
+    }
+  }
+
+  // Purane array ko naye (sirf pending wale) array se replace kar do
+  allTasks = remainingTasks;
+
+  // Screen update karo
+  showAllTasks();
+}
+
+document.getElementById("clearCompletedBtn").onclick = clearCompletedTasks;
+// Jab user date select kare, calculate karo
+function calculateDaysLeft() {
+  let selectedDate = document.getElementById("boardDateInput").value;
+
+  if (selectedDate === "") {
+    return;
+  }
+
+  let today = new Date();
+  let boardDate = new Date(selectedDate);
+
+  // Dono dates ko time 00:00 pe le aao taaki sirf din count ho
+  today.setHours(0, 0, 0, 0);
+  boardDate.setHours(0, 0, 0, 0);
+
+  // Milliseconds mein farak nikalo, fir din mein convert karo
+  let differenceInTime = boardDate - today;
+  let differenceInDays = Math.round(differenceInTime / (1000 * 60 * 60 * 24));
+
+  document.getElementById("daysLeft").textContent = differenceInDays;
+}
+
+
