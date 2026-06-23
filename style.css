@@ -656,7 +656,7 @@ body.dark-mode select {
   border: 2px solid #5993ef !important;
   color: #ffffff !important;
 }
-.task-card {
+/* .task-card {
   display: flex;
   align-items: flex-start;
   gap: 12px;
@@ -666,7 +666,7 @@ body.dark-mode select {
   padding: 16px;
   margin-bottom: 12px;
   list-style: none;
-}
+} */
 
 .task-checkbox {
   width: 20px;
@@ -730,4 +730,78 @@ body.dark-mode select {
 .task-date {
   font-size: 13px;
   color: #888;
+}
+.task-checkbox {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #ccc;
+  border-radius: 50%;
+  cursor: pointer;
+  appearance: none;        /* default checkbox look hata do */
+  -webkit-appearance: none;
+  outline: none;
+  background-color: white;
+}
+
+.task-checkbox:checked {
+  background-color: #3b82f6;
+  border-color: #3b82f6;
+}
+/* ===== TASK CARD ===== */
+.task-card {
+  background-color: #ffffff;
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 12px;
+  list-style: none;
+}
+
+.task-top-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.task-checkbox {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #ccc;
+  border-radius: 50%;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  outline: none;
+  background-color: white;
+}
+
+.task-checkbox:checked {
+  background-color: #3b82f6;
+  border-color: #0c59d5;
+}
+
+.task-name {
+  font-size: 17px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.task-bottom-row {
+  /* margin-top: 4px; */
+  /* margin-left: 23px; */
+  font-size: 16px;
+  color: #222121;
+}
+.task-top-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.delete-btn {
+  margin-left: auto;     /* yeh button ko dabba ke sabse right pe bhej deta hai */
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
 }
