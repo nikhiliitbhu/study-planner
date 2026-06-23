@@ -615,11 +615,7 @@ input, select {
     transition: none;
   }
 }
-/* Always show delete button on mobile (no hover) */
-  .btn-delete {
-    opacity: 1;
-  }
-  
+
 body.dark-mode {
   background-color: #121212;
   color: #f0f0f0;
