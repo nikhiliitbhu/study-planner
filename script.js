@@ -1,3 +1,10 @@
+// Cheez            Kaam
+// !important       CSS rule ko sabse strong bana dena
+// .trim()          String ke aage-peeche khaali jagah hatana
+// .appendChild()    Ek element ko doosre element ke andar jodna
+const daysToboard = document.getElementById("daysLeft");
+
+
 function toggleMode() {
   document.body.classList.toggle("dark-mode");
   let button = document.getElementById("darkToggle");
@@ -7,7 +14,6 @@ function toggleMode() {
     button.textContent = "🌙";
   }
 }
-
 // Yeh ek khaali array hai - isme har task ek "object" ke roop me store hoga
 let allTasks = [];
 
@@ -100,3 +106,7 @@ function showAllTasks() {
     container.appendChild(box);
   }
 }
+
+const examDate=new Date("2027-2-20");
+let numberOfDaysLeft = Math.ceil((examDate- new Date()) / (1000 * 60 * 60 * 24));
+daysToboard.innerText = numberOfDaysLeft + " ";
