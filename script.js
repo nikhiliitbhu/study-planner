@@ -154,6 +154,7 @@ function addNewTask() {
   };
 
   allTasks.push(newTask);
+  saveTasks(); 
   showAllTasks();
   document.getElementById("taskInput").value = "";
 }
@@ -165,6 +166,7 @@ function toggleComplete(index) {
   } else {
     allTasks[index].completed = true;
   }
+  saveTasks(); 
   showAllTasks();
 }
 
@@ -226,6 +228,7 @@ function updateProgressBar() {
 // Task delete karne ke liye
 function deleteTask(index) {
   allTasks.splice(index, 1);
+  saveTasks(); 
   showAllTasks();
 }
 
@@ -243,6 +246,7 @@ function clearCompletedTasks() {
   }
 
   allTasks = remainingTasks;
+  saveTasks();
   showAllTasks();
 }
 
@@ -253,7 +257,8 @@ function calculateDaysLeft() {
   if (selectedDate === "") {
     return;
   }
-
+  // Date ko localStorage mein save karo
+  localStorage.setItem("boardDate", selectedDate);
   let today = new Date();
   let boardDate = new Date(selectedDate);
 
@@ -264,6 +269,7 @@ function calculateDaysLeft() {
   let differenceInDays = Math.round(differenceInTime / (1000 * 60 * 60 * 24));
 
   document.getElementById("daysLeft").textContent = differenceInDays;
+loadTasks();  
 }
 
 // ===== Button click events - sab functions define hone ke BAAD =====
@@ -274,3 +280,38 @@ document.getElementById("boardDateInput").onchange = calculateDaysLeft;
 
 // Page load hote hi list dikhao
 showAllTasks();
+function saveTasks() {
+  localStorage.setItem("myTasks", JSON.stringify(allTasks));
+}
+function loadTasks() {
+  let savedData = localStorage.getItem("myTasks");
+
+  if (savedData !== null) {
+    allTasks = JSON.parse(savedData);
+  }
+}
+// JSON.parse(...) — text ko wapas array of objects mein convert kar deta hai (stringify ka opposite)
+// if (savedData !== null) — agar pehli baar website khol rahe ho (kuch save hi nahi hua),
+//  to yeh check zaroori hai, warna error aayega
+function saveTasks() {
+  localStorage.setItem("myTasks", JSON.stringify(allTasks));
+}
+
+function loadTasks() {
+  let savedData = localStorage.getItem("myTasks");
+
+  if (savedData !== null) {
+    allTasks = JSON.parse(savedData);
+  }
+}
+function loadBoardDate() {
+  let savedDate = localStorage.getItem("boardDate");
+
+  if (savedDate !== null) {
+    document.getElementById("boardDateInput").value = savedDate;
+    calculateDaysLeft();
+  }
+}
+loadBoardDate(); 
+loadTasks();  
+showAllTasks(); 
