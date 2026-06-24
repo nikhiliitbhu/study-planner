@@ -136,7 +136,7 @@ function updateProgressBar() {
   // Text update karo
   document.getElementById("progressText").textContent = completedCount + " of " + total + " tasks done today";
   document.getElementById("progressPercent").textContent = percent + "%";
-
+progressFill.style.width = progress + "%";
   // Progress bar ki patti ki width % ke hisaab se set karo
   document.getElementById("progressFill").style.width = percent + "%";
 }
