@@ -1,3 +1,4 @@
+
 // // Cheez            Kaam
 // // !important       CSS rule ko sabse strong bana dena
 // // .trim()          String ke aage-peeche khaali jagah hatana
@@ -16,6 +17,8 @@ function toggleMode() {
 }
 
 // Yeh ek khaali array hai - isme har task ek "object" ke roop me store hoga
+let currentFilter = "All";
+let currentSubjectFilter = "All";
 let allTasks = [];
 
 // Yeh function saare tasks ko screen pe dikhata hai
@@ -27,6 +30,19 @@ function showAllTasks() {
   for (let i = 0; i < allTasks.length; i++) {
 
     let task = allTasks[i];
+
+    // Pending/Done filter check
+    if (currentFilter === "active" && task.completed === true) {
+      continue;
+    }
+    if (currentFilter === "completed" && task.completed === false) {
+      continue;
+    }
+
+    // Subject filter check
+    if (currentSubjectFilter !== "All" && task.subject !== currentSubjectFilter) {
+      continue;
+    }
 
     let box = document.createElement("li");
     box.className = "task-card";
@@ -54,6 +70,66 @@ function showAllTasks() {
 
   updateStats();
   updateProgressBar();
+  renderSubjectButtons();
+}
+
+// Filter button click hone par yeh chalega (All / Pending / Done)
+function setFilter(filterName) {
+  currentFilter = filterName;
+  showAllTasks();
+}
+
+// Subject filter button click hone par yeh chalega
+function setSubjectFilter(subjectName) {
+  currentSubjectFilter = subjectName;
+  showAllTasks();
+}
+
+// Subject buttons ko dobara banata hai - sirf woh subjects jinka task bana hai
+function renderSubjectButtons() {
+
+  let subjectContainer = document.getElementById("subjectFilters");
+  subjectContainer.innerHTML = "";
+
+  // Pehle "All" button hamesha banao
+  let allBtn = document.createElement("button");
+  allBtn.className = "filter-btn";
+  if (currentSubjectFilter === "All") {
+    allBtn.className = "filter-btn active";
+  }
+  allBtn.textContent = "All";
+  allBtn.onclick = function() {
+    setSubjectFilter("All");
+  };
+  subjectContainer.appendChild(allBtn);
+
+  // Ek khaali array - isme sirf unique subjects rakhenge
+  let uniqueSubjects = [];
+
+  for (let i = 0; i < allTasks.length; i++) {
+    let subjectName = allTasks[i].subject;
+
+    if (uniqueSubjects.includes(subjectName) === false) {
+      uniqueSubjects.push(subjectName);
+    }
+  }
+
+  // Ab har unique subject ka button banao
+  for (let i = 0; i < uniqueSubjects.length; i++) {
+    let subjectName = uniqueSubjects[i];
+
+    let btn = document.createElement("button");
+    btn.className = "filter-btn";
+    if (currentSubjectFilter === subjectName) {
+      btn.className = "filter-btn active";
+    }
+    btn.textContent = subjectName;
+    btn.onclick = function() {
+      setSubjectFilter(subjectName);
+    };
+
+    subjectContainer.appendChild(btn);
+  }
 }
 
 // Yeh function naya task add karta hai
@@ -92,26 +168,41 @@ function toggleComplete(index) {
   showAllTasks();
 }
 
-// Total, completed, pending count karke screen pe dikhao
+// Total, completed, pending, overdue count karke screen pe dikhao
 function updateStats() {
   let total = allTasks.length;
   let completedCount = 0;
   let pendingCount = 0;
+  let overdueCount = 0;
+
+  let today = new Date();
+  today.setHours(0, 0, 0, 0);
 
   for (let i = 0; i < allTasks.length; i++) {
+
     if (allTasks[i].completed === true) {
       completedCount = completedCount + 1;
     } else {
       pendingCount = pendingCount + 1;
+
+      if (allTasks[i].dueDate !== "") {
+        let taskDate = new Date(allTasks[i].dueDate);
+        taskDate.setHours(0, 0, 0, 0);
+
+        if (taskDate < today) {
+          overdueCount = overdueCount + 1;
+        }
+      }
     }
   }
 
   document.getElementById("statTotal").textContent = total;
   document.getElementById("statDone").textContent = completedCount;
   document.getElementById("statPending").textContent = pendingCount;
+  document.getElementById("statOverdue").textContent = overdueCount;
 }
 
-// Progress bar update karne wala function - YAHI BUG FIX HUA HAI
+// Progress bar update karne wala function
 function updateProgressBar() {
   let total = allTasks.length;
   let completedCount = 0;

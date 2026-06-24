@@ -14,7 +14,7 @@
       <span class="logo">📚</span>
       <div>
         <h1 class="app-title">Study Planner</h1>
-        <p class="app-subtitle">Board Exam 2025</p>
+        <p class="app-subtitle">Board Exam 2027</p>
       </div>
     </div>
 
@@ -93,12 +93,12 @@
     </section>
 
     <!-- Filter buttons -->
-    <section class="filter-section">
+   <section class="filter-section">
       <div class="filter-group">
         <span class="filter-label">Filter by:</span>
-        <button class="filter-btn active" data-filter="All">All</button>
-        <button class="filter-btn" data-filter="active">Pending</button>
-        <button class="filter-btn" data-filter="completed">Done</button>
+        <button class="filter-btn active" data-filter="All" onclick="setFilter('All')">All</button>
+        <button class="filter-btn" data-filter="active" onclick="setFilter('active')">Pending</button>
+        <button class="filter-btn" data-filter="completed" onclick="setFilter('completed')">Done</button>
       </div>
 
       <div class="subject-filter-group" id="subjectFilters">

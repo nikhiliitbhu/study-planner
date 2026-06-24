@@ -652,7 +652,7 @@ body.dark-mode select {
   background-color: #8f8e8e;
 } */
 .btn-add {
-  background-color: #3b82f6 !important;
+  background-color: #3b82f6 !;
   border: 2px solid #5993ef !important;
   color: #ffffff !important;
 }
@@ -765,10 +765,7 @@ body.dark-mode select {
   background-color: white;
 }
 
-.task-checkbox:checked {
-  background-color: #155bcb;
-  border-color: #0c59d5;
-}
+
 
 .task-name {
   font-size: 17px;
@@ -818,4 +815,9 @@ body.dark-mode select {
   height: 100%;
   border-radius: 10px;
   transition: width 0.3s ease;
+}
+#addBtn {
+  background-color: #3b82f6 !important;
+  border: 2px solid #5993ef !important;
+  color: #ffffff !important;
 }
