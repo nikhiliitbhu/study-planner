@@ -28,11 +28,11 @@
 }
 
 /* Dark mode — same variables, different values */
-body.dark {
-  --bg:          #111110;
-  --surface:     #1c1c1a;
+body.dark-mode {
+  --bg:          #121212;
+  --surface:     #1e1e1e;
   --surface-2:   #252523;
-  --border:      #2e2e2b;
+  --border:      #333333;
   --text:        #f0efe9;
   --text-muted:  #9a9890;
   --accent:      #3b82f6;
@@ -43,6 +43,8 @@ body.dark {
   --amber-light: #1c1208;
   --red:         #ef4444;
   --red-light:   #1f0808;
+  background-color: var(--bg);
+  color: var(--text);
 }
 
 
@@ -124,6 +126,7 @@ input, select {
   padding: 6px 14px;
   text-align: center;
   min-width: 90px;
+  position: relative;
 }
 
 .countdown-number {
@@ -141,6 +144,18 @@ input, select {
   letter-spacing: 0.05em;
 }
 
+#boardDateInput {
+  margin-top: 4px;
+  padding: 3px 6px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 0.7rem;
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  width: 100%;
+}
+
 /* Dark mode toggle button */
 .dark-toggle {
   font-size: 1.3rem;
@@ -148,6 +163,7 @@ input, select {
   border-radius: var(--radius-sm);
   transition: background var(--transition);
   line-height: 1;
+  flex-shrink: 0;
 }
 
 .dark-toggle:hover {
@@ -199,7 +215,6 @@ input, select {
   background: var(--green);
   border-radius: 999px;
   width: 0%;
-  /* Smooth animation when width changes */
   transition: width 0.4s ease;
 }
 
@@ -321,10 +336,20 @@ input, select {
   color: #fff;
 }
 
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
 .subject-filter-group {
   display: flex;
   gap: 6px;
   flex-wrap: wrap;
+  border-left: 1px solid var(--border);
+  padding-left: 10px;
+  margin-left: 4px;
 }
 
 /* Push clear button to the right */
@@ -343,159 +368,106 @@ input, select {
 }
 
 
-/* ── 8. TASK LIST ──────────────────────────────────────────── */
+/* ── 8. TASK LIST / TASK CARD ──────────────────────────────── */
 .task-list {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-/* Each task item */
-.task-item {
+.task-card {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
-  padding: 12px 14px;
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
+  padding: 14px 16px;
+  list-style: none;
   transition: box-shadow var(--transition), border-color var(--transition);
-  animation: slideIn 0.2s ease;
 }
 
-/* Slide-in animation when task is added */
-@keyframes slideIn {
-  from { opacity: 0; transform: translateY(-8px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.task-item:hover {
+.task-card:hover {
   box-shadow: var(--shadow);
-  border-color: var(--accent);
 }
 
-/* Completed task — greyed out */
-.task-item.completed {
-  opacity: 0.55;
+.task-top-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-/* Custom checkbox */
+/* Custom round checkbox */
 .task-checkbox {
   width: 20px;
   height: 20px;
-  border-radius: 50%;
   border: 2px solid var(--border);
-  flex-shrink: 0;
+  border-radius: 50%;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 2px;
+  appearance: none;
+  -webkit-appearance: none;
+  outline: none;
+  background-color: var(--surface);
+  flex-shrink: 0;
+  position: relative;
   transition: all var(--transition);
-  font-size: 0.65rem;
-  color: transparent;
 }
 
 .task-checkbox:hover {
   border-color: var(--green);
 }
 
-/* Checked state */
-.task-checkbox.checked {
-  background: var(--green);
+.task-checkbox.checked-style {
+  background-color: var(--green);
   border-color: var(--green);
-  color: #fff;
 }
 
-/* Task text area takes remaining space */
-.task-body {
-  flex: 1;
-  min-width: 0;
+.task-checkbox.checked-style::after {
+  content: "✓";
+  color: #fff;
+  font-size: 12px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .task-name {
   font-size: 0.95rem;
+  font-weight: 600;
   color: var(--text);
+  margin: 0;
   word-break: break-word;
+  flex: 1;
 }
 
-/* Strike through when task is completed */
-.task-item.completed .task-name {
+.completed-text {
   text-decoration: line-through;
   color: var(--text-muted);
+  font-weight: 400;
 }
 
-/* Meta info row below task name */
-.task-meta {
+.delete-btn {
+  margin-left: auto;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  flex-shrink: 0;
+  opacity: 0.7;
+  transition: opacity var(--transition);
+}
+
+.delete-btn:hover {
+  opacity: 1;
+}
+
+.task-bottom-row {
+  margin-top: 8px;
+  margin-left: 30px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
   display: flex;
   align-items: center;
   gap: 6px;
   flex-wrap: wrap;
-  margin-top: 4px;
-}
-
-/* Subject badge */
-.badge-subject {
-  font-size: 0.7rem;
-  padding: 2px 8px;
-  border-radius: 999px;
-  background: var(--accent-light);
-  color: var(--accent);
-  font-weight: 500;
-}
-
-/* Priority badge */
-.badge-priority {
-  font-size: 0.7rem;
-  padding: 2px 8px;
-  border-radius: 999px;
-  font-weight: 500;
-}
-
-.badge-priority.high   { background: var(--red-light);   color: var(--red);   }
-.badge-priority.medium { background: var(--amber-light); color: var(--amber); }
-.badge-priority.low    { background: var(--green-light); color: var(--green); }
-
-/* Due date badge */
-.badge-due {
-  font-size: 0.7rem;
-  color: var(--text-muted);
-}
-
-.badge-due.overdue {
-  color: var(--red);
-  font-weight: 600;
-}
-
-.badge-due.due-soon {
-  color: var(--amber);
-  font-weight: 600;
-}
-
-/* Delete button shown on hover */
-.task-actions {
-  display: flex;
-  gap: 4px;
-  flex-shrink: 0;
-}
-
-.btn-delete {
-  font-size: 1rem;
-  padding: 4px 6px;
-  border-radius: var(--radius-sm);
-  color: var(--text-muted);
-  opacity: 0;
-  transition: opacity var(--transition), color var(--transition), background var(--transition);
-}
-
-/* Show delete button only when hovering over the task */
-.task-item:hover .btn-delete {
-  opacity: 1;
-}
-
-.btn-delete:hover {
-  color: var(--red);
-  background: var(--red-light);
 }
 
 
@@ -504,10 +476,6 @@ input, select {
   text-align: center;
   padding: 3rem 1rem;
   display: none; /* Hidden by default; JS shows it when list is empty */
-}
-
-.empty-state.visible {
-  display: block;
 }
 
 .empty-icon {
@@ -573,15 +541,56 @@ input, select {
 }
 
 
-/* ── 12. RESPONSIVE (Mobile) ───────────────────────────────── */
-@media (max-width: 600px) {
-  .header {
-    flex-wrap: wrap;
-    gap: 8px;
+/* ── 12. RESPONSIVE (Tablet) ───────────────────────────────── */
+@media (max-width: 768px) and (min-width: 481px) {
+  .container {
+    padding: 1.25rem 1rem 2rem;
   }
 
+  .stats-section {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+}
+
+
+/* ── 13. RESPONSIVE (Mobile) ───────────────────────────────── */
+@media (max-width: 480px) {
+
+  /* Header - wrap neatly, logo row takes full width */
+  .header {
+    flex-wrap: wrap;
+    padding: 0.8rem 1rem;
+    gap: 10px;
+  }
+
+  .header-left {
+    flex: 1 1 100%;
+  }
+
+  .countdown-box {
+    min-width: 80px;
+    padding: 5px 12px;
+  }
+
+  .countdown-number {
+    font-size: 1.2rem;
+  }
+
+  .dark-toggle {
+    margin-left: auto;
+  }
+
+  /* Container padding tighter on small screens */
+  .container {
+    padding: 1rem 0.8rem 1.5rem;
+    gap: 1rem;
+  }
+
+  /* Add task form - stack everything in one column */
   .form-row {
     flex-direction: column;
+    gap: 8px;
   }
 
   .task-input,
@@ -590,234 +599,62 @@ input, select {
   .date-input,
   .btn-add {
     width: 100%;
+    flex: none;
   }
 
-  .stats-section {
-    grid-template-columns: repeat(2, 1fr);
+  /* Filter bar - stack groups, wrap buttons */
+  .filter-section {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .filter-group {
+    width: 100%;
+  }
+
+  .subject-filter-group {
+    width: 100%;
+    border-left: none;
+    padding-left: 0;
+    margin-left: 0;
+    padding-top: 8px;
+    border-top: 1px solid var(--border);
   }
 
   .btn-clear {
     margin-left: 0;
+    align-self: flex-end;
   }
 
-  /* Always show delete button on mobile (no hover) */
-  .btn-delete {
+  /* Task card - delete button always visible (no hover on touch) */
+  .delete-btn {
     opacity: 1;
+  }
+
+  .task-bottom-row {
+    margin-left: 30px;
+  }
+
+  /* Stats - 2 per row instead of 4 */
+  .stats-section {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .stat-number {
+    font-size: 1.4rem;
   }
 }
 
 /* Respect user's preference for reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  .task-item {
+  .task-card {
     animation: none;
   }
   .progress-bar-fill {
     transition: none;
   }
-}
-
-body.dark-mode {
-  background-color: #121212;
-  color: #f0f0f0;
-}
-
-body.dark-mode * {
-  background-color: #1e1e1e;
-  color: #f0f0f0;
-  border-color: #333;
-}
-
-body.dark-mode input,
-body.dark-mode select {
-  background-color: #2a2a2a;
-  color: #f0f0f0;
-  border: 1px solid #444;
-}
-/* Countdown box - sab kuch blue */
-.countdown-box {
-  border: 2px solid #184cb3 !important;
-}
-
-.countdown-box .countdown-number,
-.countdown-box .countdown-label,
-.countdown-box #daysLeft {
-  color: #3b82f6 !important;
-}
-/* 
-/* Progress bar ki patti (fill) - white */
-.progress-section .progress-bar,
-.progress-section .progress-fill,
-.progress-section [class*="progress"][class*="bar"],
-.progress-section [class*="progress"][class*="fill"] {
-  background-color: #8f8e8e;
-} */
-.btn-add {
-  background-color: #3b82f6 !;
-  border: 2px solid #5993ef !important;
-  color: #ffffff !important;
-}
-
-
-.task-checkbox {
-  width: 20px;
-  height: 20px;
-  border: 2px solid #ccc;
-  border-radius: 50%;
-  margin-top: 2px;
-  cursor: pointer;
-  flex-shrink: 0;
-}
-
-.task-content {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.task-name {
-  font-size: 16px;
-  font-weight: 600;
-  color: #1a1a1a;
-}
-
-.task-meta {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.task-subject-tag {
-  background-color: #e8edff;
-  color: #4a5fd9;
-  font-size: 13px;
-  font-weight: 500;
-  padding: 3px 10px;
-  border-radius: 12px;
-}
-
-.task-priority-tag {
-  font-size: 13px;
-  font-weight: 500;
-  padding: 3px 10px;
-  border-radius: 12px;
-}
-
-.priority-high {
-  background-color: #ffe4ea;
-  color: #d6336c;
-}
-
-.priority-medium {
-  background-color: #fff4d6;
-  color: #b8860b;
-}
-
-.priority-low {
-  background-color: #e3f9e5;
-  color: #0eef37;
-}
-
-.task-date {
-  font-size: 13px;
-  color: #888;
-}
-.task-checkbox {
-  width: 20px;
-  height: 20px;
-  border: 2px solid #ccc;
-  border-radius: 50%;
-  cursor: pointer;
-  appearance: none;
-  -webkit-appearance: none;
-  outline: none;
-  background-color: white;
-}
-
-.task-checkbox:checked {
-  background-color: #3b82f6;
-  border-color: #3b82f6;
-}
-/* ===== TASK CARD ===== */
-.task-card {
-  background-color: #ffffff;
-  border: 1px solid #e5e5e5;
-  border-radius: 10px;
-  padding: 16px;
-  margin-bottom: 12px;
-  list-style: none;
-}
-
-.task-top-row {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.task-checkbox {
-  width: 20px;
-  height: 20px;
-  border: 2px solid #ccc;
-  border-radius: 50%;
-  cursor: pointer;
-  appearance: none;
-  -webkit-appearance: none;
-  outline: none;
-  background-color: white;
-}
-
-
-
-.task-name {
-  font-size: 17px;
-  font-weight: 600;
-  margin: 0;
-}
-
-.task-bottom-row {
-  /* margin-top: 4px; */
-  /* margin-left: 23px; */
-  font-size: 16px;
-  color: #222121;
-}
-.task-top-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.delete-btn {
-  margin-left: auto;     /* yeh button ko dabba ke sabse right pe bhej deta hai */
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 16px;
-}
-/* .task-checkbox{
-  border-color: #3b82f6!important;
-} */
-.task-checkbox.checked-style {
-  background-color: #2f9e44 ;
-  border-color: #2f9e44;
-  position: relative;
-}
-
-.task-checkbox.checked-style::after {
-  content: "✓";
-  color: rgb(176, 170, 170);
-  font-size: 12px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-.progress-bar-fill {
-  background-color: #2f9e44 !important;
-  height: 100%;
-  border-radius: 10px;
-  transition: width 0.3s ease;
-}
-#addBtn {
-  background-color: #3b82f6 !important;
-  border: 2px solid #5993ef !important;
-  color: #ffffff !important;
+  .task-checkbox {
+    transition: none;
+  }
 }
